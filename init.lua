@@ -780,6 +780,23 @@ require("lazy").setup({
 		dependencies = "nvim-tree/nvim-web-devicons",
 		config = function()
 			require("bufferline").setup({})
+
+			local map = vim.keymap.set
+
+			-- set go to buffer keymaps
+			map("n", "<leader>1", "<Cmd>BufferLineGoToBuffer 1<CR>", { silent = true })
+			map("n", "<leader>2", "<Cmd>BufferLineGoToBuffer 2<CR>", { silent = true })
+			map("n", "<leader>3", "<Cmd>BufferLineGoToBuffer 3<CR>", { silent = true })
+			map("n", "<leader>4", "<Cmd>BufferLineGoToBuffer 4<CR>", { silent = true })
+			map("n", "<leader>5", "<Cmd>BufferLineGoToBuffer 5<CR>", { silent = true })
+			map("n", "<leader>6", "<Cmd>BufferLineGoToBuffer 6<CR>", { silent = true })
+			map("n", "<leader>7", "<Cmd>BufferLineGoToBuffer 7<CR>", { silent = true })
+			map("n", "<leader>8", "<Cmd>BufferLineGoToBuffer 8<CR>", { silent = true })
+			map("n", "<leader>9", "<Cmd>BufferLineGoToBuffer 9<CR>", { silent = true })
+			map("n", "<leader>$", "<Cmd>BufferLineGoToBuffer -1<CR>", { silent = true })
+
+			-- set buffer closing
+			map("n", "<leader>w", "<Cmd>bd<CR>", { silent = true })
 		end,
 	},
 
