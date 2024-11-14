@@ -252,7 +252,7 @@ require("lazy").setup({
 				{ "<leader>f", group = "[F]ind" },
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
-        { "<leader>x", group = "[X]diagnostics" },
+				{ "<leader>x", group = "[X]diagnostics" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 
 				-- Hide BufferLineGoToBuffer definitions
@@ -682,6 +682,9 @@ require("lazy").setup({
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
+		config = function()
+			require("catppuccin").setup({})
+		end,
 		init = function()
 			-- Load the colorscheme here.
 			-- Like many other themes, this one has different styles, and you could load
