@@ -779,7 +779,11 @@ require("lazy").setup({
 		version = "*",
 		dependencies = "nvim-tree/nvim-web-devicons",
 		config = function()
-			require("bufferline").setup({})
+			require("bufferline").setup({
+				options = {
+					separator_style = "slope",
+				},
+			})
 
 			local map = vim.keymap.set
 
