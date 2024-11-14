@@ -85,6 +85,9 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
+-- File explorer key bind
+vim.keymap.set("n", "<leader>e", "<cmd>e .<CR>")
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -546,7 +549,6 @@ require("lazy").setup({
 			format_on_save = false,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				cs = { "csharpier" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
