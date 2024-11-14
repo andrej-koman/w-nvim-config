@@ -94,11 +94,10 @@ vim.keymap.set("n", "<leader>e", "<cmd>e .<CR>")
 vim.keymap.set("n", "<C-s>", "<cmd>w<CR>")
 
 -- Wrap the trouble files
-vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
-  pattern = "*trouble*",
-  command = "set"
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*trouble*",
+	command = "set",
 })
-
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -204,7 +203,6 @@ require("lazy").setup({
 	-- after the plugin has been loaded:
 	--  config = function() ... end
 
-  -- TODO: Hide the BufferLineGoToBuffer keybinds
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
@@ -254,7 +252,20 @@ require("lazy").setup({
 				{ "<leader>f", group = "[F]ind" },
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
+        { "<leader>x", group = "[X]diagnostics" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+
+				-- Hide BufferLineGoToBuffer definitions
+				{ "<leader>1", hidden = true },
+				{ "<leader>2", hidden = true },
+				{ "<leader>3", hidden = true },
+				{ "<leader>4", hidden = true },
+				{ "<leader>5", hidden = true },
+				{ "<leader>6", hidden = true },
+				{ "<leader>7", hidden = true },
+				{ "<leader>8", hidden = true },
+				{ "<leader>9", hidden = true },
+				{ "<leader>$", hidden = true },
 			},
 		},
 	},
@@ -562,11 +573,6 @@ require("lazy").setup({
 			format_on_save = false,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
-				--
-				-- You can use 'stop_after_first' to run the first available formatter from the list
-				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
 		},
 	},
@@ -575,35 +581,16 @@ require("lazy").setup({
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
-			-- Snippet Engine & its associated nvim-cmp source
 			{
 				"L3MON4D3/LuaSnip",
 				build = (function()
-					-- Build Step is needed for regex support in snippets.
-					-- This step is not supported in many windows environments.
-					-- Remove the below condition to re-enable on windows.
 					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
 						return
 					end
 					return "make install_jsregexp"
 				end)(),
-				dependencies = {
-					-- `friendly-snippets` contains a variety of premade snippets.
-					--    See the README about individual language/framework/plugin snippets:
-					--    https://github.com/rafamadriz/friendly-snippets
-					-- {
-					--   'rafamadriz/friendly-snippets',
-					--   config = function()
-					--     require('luasnip.loaders.from_vscode').lazy_load()
-					--   end,
-					-- },
-				},
 			},
 			"saadparwaiz1/cmp_luasnip",
-
-			-- Adds other completion capabilities.
-			--  nvim-cmp does not ship with all sources by default. They are split
-			--  into multiple repos for maintenance purposes.
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 		},
@@ -835,12 +822,12 @@ require("lazy").setup({
 				desc = "Buffer Diagnostics (Trouble)",
 			},
 			{
-				"<leader>cs",
+				"<leader>xs",
 				"<cmd>Trouble symbols toggle focus=false<cr>",
 				desc = "Symbols (Trouble)",
 			},
 			{
-				"<leader>cl",
+				"<leader>xl",
 				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
 				desc = "LSP Definitions / references / ... (Trouble)",
 			},
@@ -856,17 +843,6 @@ require("lazy").setup({
 			},
 		},
 	},
-
-	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-	--    This is the easiest way to modularize your config.
-	--
-	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-	-- { import = 'custom.plugins' },
-	--
-	-- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
-	-- Or use telescope!
-	-- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
-	-- you can continue same window with `<space>sr` which resumes last telescope search
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
