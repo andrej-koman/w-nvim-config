@@ -703,6 +703,13 @@ require("lazy").setup({
 			},
 		},
 	},
+	{
+		-- Autoclose brackets, parenthesis
+		"m4xshen/autoclose.nvim",
+		config = function()
+			require("autoclose").setup()
+		end,
+	},
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
