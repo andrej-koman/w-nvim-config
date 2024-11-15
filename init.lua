@@ -644,6 +644,7 @@ require("lazy").setup({
 			require("bufferline").setup({
 				options = {
 					separator_style = "slope",
+					numbers = "ordinal",
 				},
 			})
 
