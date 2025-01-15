@@ -88,7 +88,11 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- NOTE: These are my keybinds
 
 -- File explorer keymap
-vim.keymap.set("n", "<leader>e", "<cmd>e .<CR>")
+
+---- Root directory
+vim.keymap.set("n", "<leader>e.", "<cmd>e .<CR>")
+---- Buffer directory
+vim.keymap.set("n", "<leader>ec", "<cmd>e %:h<CR>")
 
 -- Saving keymap
 vim.keymap.set("n", "<C-s>", "<cmd>w<CR>")
