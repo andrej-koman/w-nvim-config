@@ -741,8 +741,8 @@ require("lazy").setup({
 			provider = "copilot",
 		},
 		-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-		-- build = "make BUILD_FROM_SOURCE=true",
-		build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false", -- for windows
+		build = "make BUILD_FROM_SOURCE=true",
+		-- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false", -- for windows
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			"stevearc/dressing.nvim",
@@ -754,7 +754,7 @@ require("lazy").setup({
 			"hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
 			"ibhagwan/fzf-lua", -- for file_selector provider fzf
 			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-			"zbirenbaum/copilot.lua", -- for providers='copilot'
+			"github/copilot.vim", -- for providers='copilot'
 			{
 				-- support for image pasting
 				"HakonHarnes/img-clip.nvim",
