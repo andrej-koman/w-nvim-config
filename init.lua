@@ -436,6 +436,8 @@ require("lazy").setup({
 			local servers = {
 				csharp_ls = {},
 				ts_ls = {},
+				jinja_lsp = {},
+				cssls = {},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -453,7 +455,9 @@ require("lazy").setup({
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
+				"stylua", -- Lua formatting
+				"djlint", -- Jinja2 HTML formatting
+				"stylelint", -- CSS formatting
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -491,6 +495,8 @@ require("lazy").setup({
 			format_on_save = false,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				html = { "djlint" },
+				css = { "stylelint" },
 			},
 		},
 	},
@@ -615,15 +621,6 @@ require("lazy").setup({
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
-
-			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
-
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-2v"
-			end
 		end,
 	},
 	{ -- Highlight, edit, and navigate code
@@ -643,7 +640,7 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
-				"c_sharp",
+				"vue",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
@@ -1323,6 +1320,52 @@ require("lazy").setup({
 					Snacks.toggle.indent():map("<leader>ug")
 					Snacks.toggle.dim():map("<leader>uD")
 				end,
+			})
+		end,
+	},
+	{
+		"f-person/git-blame.nvim",
+		-- load the plugin at startup
+		event = "VeryLazy",
+		-- Because of the keys part, you will be lazy loading this plugin.
+		-- The plugin will only load once one of the keys is used.
+		-- If you want to load the plugin at startup, add something like event = "VeryLazy",
+		-- or lazy = false. One of both options will work.
+		opts = {
+			enabled = true,
+			message_template = " <author> • <date> • <summary>", -- template for the blame message, check the Message template section for more options
+			date_format = "%d-%m-%Y %H:%M:%S", -- template for the date, check Date format section for more options
+			virtual_text_column = 1, -- virtual text start column, check Start virtual text at column section for more options
+		},
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons", "f-person/git-blame.nvim" },
+		config = function()
+			vim.g.gitblame_display_virtual_text = 0 -- Disable virtual text
+			local git_blame = require("gitblame")
+
+			require("lualine").setup({
+				options = {
+					icons_enabled = true,
+					theme = "gruvbox",
+					component_separators = { left = "", right = "" },
+					section_separators = { left = "", right = "" },
+					disabled_filetypes = { statusline = { "lazy" } },
+				},
+				sections = {
+					lualine_c = {
+						{ git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available },
+					},
+				},
+				inactive_sections = {
+					lualine_a = {},
+					lualine_b = {},
+					lualine_c = { "filename" },
+					lualine_x = { "location" },
+					lualine_y = {},
+					lualine_z = {},
+				},
 			})
 		end,
 	},
