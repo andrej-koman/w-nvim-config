@@ -433,11 +433,36 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+			local data_path = vim.fn.stdpath("data")
+			local volar_path = data_path .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+
 			local servers = {
 				csharp_ls = {},
-				ts_ls = {},
+				-- Commented out, as it interferes with volar ts_ls = {},
 				jinja_lsp = {},
+				jedi_language_server = {},
 				cssls = {},
+				volar = {
+					init_options = {
+						experimental = { takeOverMode = true },
+						plugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = volar_path,
+								languages = { "javascript", "typescript", "vue" },
+							},
+						},
+					},
+					settings = {
+						css = {
+							validate = true,
+							link = {
+								unknownAtRules = "ignore",
+							},
+						},
+					},
+					filetypes = { "vue", "typescript", "javascript" },
+				},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -655,6 +680,21 @@ require("lazy").setup({
 		},
 	},
 	{
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require("nvim-ts-autotag").setup({
+				filetypes = {
+					"html",
+					"xml",
+					"vue",
+					"svelte",
+					"typescriptreact",
+					"javascriptreact",
+				},
+			})
+		end,
+	},
+	{
 		"akinsho/bufferline.nvim",
 		version = "*",
 		dependencies = "nvim-tree/nvim-web-devicons",
@@ -753,23 +793,23 @@ require("lazy").setup({
 			"ibhagwan/fzf-lua", -- for file_selector provider fzf
 			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
 			"github/copilot.vim", -- for providers='copilot'
-			{
-				-- support for image pasting
-				"HakonHarnes/img-clip.nvim",
-				event = "VeryLazy",
-				opts = {
-					-- recommended settings
-					default = {
-						embed_image_as_base64 = false,
-						prompt_for_file_name = false,
-						drag_and_drop = {
-							insert_mode = true,
-						},
-						-- required for Windows users
-						use_absolute_path = true,
-					},
-				},
-			},
+			--			{
+			--				-- support for image pasting
+			--				"HakonHarnes/img-clip.nvim",
+			--				event = "VeryLazy",
+			--				opts = {
+			--					-- recommended settings
+			--					default = {
+			--						embed_image_as_base64 = false,
+			--						prompt_for_file_name = false,
+			--						drag_and_drop = {
+			--							insert_mode = true,
+			--						},
+			--						-- required for Windows users
+			--						use_absolute_path = true,
+			--					},
+			--				},
+			--			},
 			{
 				-- Make sure to set this up properly if you have lazy=true
 				"MeanderingProgrammer/render-markdown.nvim",
