@@ -157,7 +157,35 @@ require("lazy").setup({
 	{ "mason-org/mason.nvim", version = "^1.0.0" },
 	{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+	{
+		-- 1) repo
+		"norcalli/nvim-colorizer.lua",
 
+		-- 2) when to load: after a buffer is read (so it picks up colors in your file)
+		event = "BufReadPost",
+
+		-- 3) optional: you can also only load it for certain filetypes
+		-- ft = { 'css', 'scss', 'html', 'javascript', 'lua', 'vim', 'javascriptreact', 'typescriptreact' },
+
+		-- 4) plugin config
+		config = function()
+			require("colorizer").setup(
+				-- which files to colorize: here “every buffer”
+				{ "*" },
+				{
+					-- options (all on by default; tweak to your liking)
+					RGB = true, -- `#rgb`
+					RRGGBB = true, -- `#rrggbb`
+					names = true, -- "Name"
+					RRGGBBAA = true, -- `#rrggbbaa`
+					rgb_fn = true, -- CSS rgb()
+					hsl_fn = true, -- CSS hsl()
+					css = false, -- disables built-in CSS parser
+					css_fn = false, -- disables all CSS functions: rgb_fn, hsl_fn, etc.
+				}
+			)
+		end,
+	},
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -438,19 +466,43 @@ require("lazy").setup({
 
 			local servers = {
 				csharp_ls = {},
-				-- Commented out, as it interferes with volar ts_ls = {},
+				ts_ls = {
+					init_options = {
+						plugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = volar_path,
+								languages = { "vue" },
+							},
+						},
+					},
+					settings = {
+						typescript = {
+							inlayHints = {
+								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
+					},
+					filetypes = {
+						"javascript",
+						"typescript",
+						"vue",
+					},
+				},
 				jinja_lsp = {},
 				jedi_language_server = {},
 				cssls = {},
 				volar = {
 					init_options = {
-						experimental = { takeOverMode = true },
-						plugins = {
-							{
-								name = "@vue/typescript-plugin",
-								location = volar_path,
-								languages = { "javascript", "typescript", "vue" },
-							},
+						vue = {
+							hybridMode = false,
 						},
 					},
 					settings = {
@@ -460,8 +512,28 @@ require("lazy").setup({
 								unknownAtRules = "ignore",
 							},
 						},
+						typescript = {
+							inlayHints = {
+								enumMemberValues = {
+									enabled = true,
+								},
+								functionLikeReturnTypes = {
+									enabled = true,
+								},
+								propertyDeclarationTypes = {
+									enabled = true,
+								},
+								parameterTypes = {
+									enabled = true,
+									suppressWhenArgumentMatchesName = true,
+								},
+								variableTypes = {
+									enabled = true,
+								},
+							},
+						},
 					},
-					filetypes = { "vue", "typescript", "javascript" },
+					filetypes = { "vue" },
 				},
 				lua_ls = {
 					settings = {
@@ -483,6 +555,7 @@ require("lazy").setup({
 				"stylua", -- Lua formatting
 				"djlint", -- Jinja2 HTML formatting
 				"stylelint", -- CSS formatting
+				"prettier", -- JS/TS/Vue formatting
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -522,6 +595,9 @@ require("lazy").setup({
 				lua = { "stylua" },
 				html = { "djlint" },
 				css = { "stylelint" },
+				vue = { "prettier" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
 			},
 		},
 	},
